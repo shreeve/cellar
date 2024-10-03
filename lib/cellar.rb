@@ -24,7 +24,8 @@ class Object
 end
 
 class Cellar
-  VERSION="0.0.1"
+  VERSION="0.1.0"
+
   attr_reader   :fields
   attr_reader   :values
   attr_accessor :strict

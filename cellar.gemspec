@@ -11,4 +11,5 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.platform    = Gem::Platform::RUBY
   s.files       = `git ls-files`.split("\n") - %w[.gitignore]
+  s.required_ruby_version = Gem::Requirement.new(">= 3.0") if s.respond_to? :required_ruby_version=
 end
