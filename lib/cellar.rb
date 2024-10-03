@@ -108,11 +108,7 @@ class Cellar
           when Array then @values.values_at(*index)
           else            @values[index]
         end
-        if Array === value
-          values.concat(value)
-        else
-          values.push(value)
-        end
+        Array === value ? values.concat(value) : values.push(value)
       end
     end
   end
