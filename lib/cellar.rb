@@ -175,6 +175,10 @@ class Cellar
     row(row) # returns self
   end
 
+  def cells
+    [@fields.dup] + @rows
+  end
+
   def rows
     @rows
   end
