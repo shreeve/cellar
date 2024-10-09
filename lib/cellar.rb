@@ -188,9 +188,14 @@ class Cellar
   def <<(data)
     @rows ||= []
     @row = row = @rows.size
-    @rows << @values = []
-    raise "unable to << #{data.class} objects" unless self.class === data.class
-    self[*data.fields] = data.values
+    if self.class === data.class
+      @rows << @values = []
+      self[*data.fields] = data.values
+    elsif data.is_a?(Array) && !data.first.is_a?(Array)
+      @rows << data
+    else
+      raise "unable to << your object"
+    end
     if @index
       block = @index if @index.is_a?(Proc)
       field = @index unless block
