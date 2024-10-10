@@ -2,7 +2,7 @@
 # cellar - Ruby gem to deal with cells of data in rows and columns
 #
 # Author: Steve Shreeve (steve.shreeve@gmail.com)
-#   Date: October 9, 2024
+#   Date: October 10, 2024
 #
 # TODO:
 # • Should we failover to empty strings like this: (value || "")
@@ -24,7 +24,7 @@ class Object
 end
 
 class Cellar
-  VERSION="0.1.5"
+  VERSION="0.1.6"
 
   attr_reader   :fields
   attr_reader   :values
@@ -211,7 +211,7 @@ class Cellar
       @rows << @values = []
       self[*data.fields] = data.values
     elsif data.is_a?(Array) && !data.first.is_a?(Array)
-      @rows << data
+      @rows << (@values = data)
     else
       raise "unable to << your object"
     end
