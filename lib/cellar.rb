@@ -24,7 +24,7 @@ class Object
 end
 
 class Cellar
-  VERSION="0.1.3"
+  VERSION="0.1.4"
 
   attr_reader   :fields
   attr_reader   :values
@@ -98,6 +98,8 @@ class Cellar
     when 0
       []
     when 1
+      first = fields.first
+      first.is_a?(Cellar) and return self[*first.fields]
       index = index(fields.first)
       value = @values[index] if index
     else
