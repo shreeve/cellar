@@ -2,7 +2,7 @@
 # cellar - Ruby gem to deal with cells of data in rows and columns
 #
 # Author: Steve Shreeve (steve.shreeve@gmail.com)
-#   Date: October 8, 2024
+#   Date: October 9, 2024
 #
 # TODO:
 # • Should we failover to empty strings like this: (value || "")
@@ -24,7 +24,7 @@ class Object
 end
 
 class Cellar
-  VERSION="0.1.4"
+  VERSION="0.1.5"
 
   attr_reader   :fields
   attr_reader   :values
@@ -59,6 +59,19 @@ class Cellar
     @finder.size == finders + 1 or warn "field clash for #{field.inspect}"
     @finder[field] ||= index
     @widest = field.length if field.length > @widest
+    index
+  end
+
+  def rename_field(field, other)
+    field = field.to_s
+    index = index(field) or raise "unable to rename the #{field.inspect} field"
+    @finder.delete(field.downcase.gsub(/\W/,'_'))
+    @finder.delete(field)
+    other = other.to_s
+    fields[index] = other
+    @finder[other.downcase.gsub(/\W/,'_')] ||= index
+    @finder[other] ||= index
+    @widest = fields.map(&:size).max
     index
   end
 
