@@ -2,7 +2,7 @@
 # cellar - Ruby gem to deal with cells of data in rows and columns
 #
 # Author: Steve Shreeve (steve.shreeve@gmail.com)
-#   Date: October 10, 2024
+#   Date: October 14, 2024
 #
 # TODO:
 # • Should we failover to empty strings like this: (value || "")
@@ -281,5 +281,35 @@ class Cellar
       h[@fields[i].downcase.gsub(/\W/,'_')] = v if !v.blank?
       h
     end
+  end
+
+  # ==[ Show table ]==
+
+  def show?
+    self
+  end
+
+  def show!(list=nil)
+    meth = list.is_a?(Array) ? list.method(:push) : method(:puts)
+    join = " │ "
+    size = @fields.size
+    full = [@fields.dup] + @rows
+    full.each_with_index do |vals, i| # only when asymmetric
+      miss = size - vals.size
+      full[i] += [nil] * miss  if miss > 0
+      full[i] = vals[0...size] if miss < 0
+    end
+    lens = full.map {|r| r.map {|c| c.to_s.size}}.transpose.map(&:max)
+    pict = lens.map {|len| "%-#{len}.#{len}s" }.join(join)
+    pict = [join, pict, join].join.strip
+    line = (pict % ([""] * size)).tr("│ ", "•─")
+    seen = -1
+    meth["", line]
+    full.each do |vals|
+      meth[pict % vals]
+      meth[line] if (seen += 1) == 0
+    end
+    meth[line, "#{seen} rows displayed", ""]
+    self
   end
 end
