@@ -289,11 +289,12 @@ class Cellar
     self
   end
 
-  def show!(list=nil)
+  def show!(list=nil, output: :stdout)
+    tabs = output == :tabs
     meth = list.is_a?(Array) ? list.method(:push) : method(:puts)
-    join = " │ "
+    join = tabs ? "\t" : " │ "
     size = @fields.size
-    full = [@fields.dup] + @rows
+    full = cells
     full.each_with_index do |vals, i| # only when asymmetric
       miss = size - vals.size
       full[i] += [nil] * miss  if miss > 0
@@ -304,12 +305,12 @@ class Cellar
     pict = [join, pict, join].join.strip
     line = (pict % ([""] * size)).tr("│ ", "•─")
     seen = -1
-    meth["", line]
+    meth["", line] unless tabs
     full.each do |vals|
       meth[pict % vals]
-      meth[line] if (seen += 1) == 0
+      meth[line] if !tabs && ((seen += 1) == 0)
     end
-    meth[line, "#{seen} rows displayed", ""]
+    meth[line, "#{seen} rows displayed", ""] unless tabs
     self
   end
 end
