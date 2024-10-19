@@ -313,7 +313,7 @@ class Cellar
       meth[pict % vals]
       meth[line] if !tabs && ((seen += 1) == 0)
     end
-    meth[line, "#{seen} rows displayed", ""] unless tabs
+    meth[line, "#{seen} row#{'s' if seen != 1} displayed", ""] unless tabs
     self
   end
 end
