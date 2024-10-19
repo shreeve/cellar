@@ -231,6 +231,18 @@ class Cellar
     self
   end
 
+  def fill!(data, &block)
+    self.class == data.class or raise "unable to fill with your #{data.class}"
+    data.values.each_with_index do |val, idx|
+      next if val.blank?
+      field = data.fields[idx]
+      index = index(field) || add_field(field)
+      value = @values[index]
+      @values[index] = block && !value.nil? ? block.call(value, val) : val
+    end
+    self
+  end
+
   def index!(field=nil, &block)
     @rows ||= []
     @index = field || block or raise "index needs a field or a block"
