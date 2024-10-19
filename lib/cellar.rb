@@ -34,12 +34,12 @@ class Cellar
   attr_reader   :values
   attr_accessor :strict
 
-  def initialize(obj=nil, header: true, strict: true)
+  def initialize(obj=nil, header: true, strict: true, index: nil)
     @fields = []
     @values = []
     @finder = {}
     @seeker = {}
-    @index  = nil
+    @index  = index
     @widest = 0
 
     if obj.is_a?(Array)
