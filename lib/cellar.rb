@@ -195,7 +195,7 @@ class Cellar
   end
 
   def cells
-    [@fields.dup] + @rows
+    [@fields.dup] + (@rows || [@values])
   end
 
   def rows
