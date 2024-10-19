@@ -18,9 +18,13 @@ class Object
     empty? or respond_to?(:strip) && strip.empty?
   end unless defined? blank?
 
-  def if_blank?(val)
+  def if_blank(val)
     blank? ? val : self
-  end unless defined? if_blank?
+  end unless defined? if_blank
+
+  def if_present
+    blank? ? nil : self
+  end unless defined? if_present
 end
 
 class Cellar
