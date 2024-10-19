@@ -246,8 +246,7 @@ class Cellar
   end
 
   def seek!(seek)
-    @rows or raise "no rows defined"
-    @seeker.empty? and raise "not indexed"
+    return nil if @rows.blank? || @seeker.blank?
 
     if row = @seeker[seek]
       row(row)
