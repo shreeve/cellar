@@ -238,7 +238,11 @@ class Cellar
       field = data.fields[idx]
       index = index(field) || add_field(field)
       value = @values[index]
-      @values[index] = block && !value.nil? ? block.call(value, val) : val
+      if block && !value.blank?
+        val = block.call(value, val)
+        next if val.blank?
+      end
+      @values[index] = val
     end
     self
   end
