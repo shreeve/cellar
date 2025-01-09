@@ -2,7 +2,7 @@
 # cellar - Ruby gem to deal with cells of data in rows and columns
 #
 # Author: Steve Shreeve (steve.shreeve@gmail.com)
-#   Date: October 19, 2024
+#   Date: January 8, 2025
 #
 # TODO:
 # • Should we failover to empty strings like this: (value || "")
@@ -28,17 +28,18 @@ class Object
 end
 
 class Cellar
-  VERSION="0.2.1"
+  VERSION="0.2.2"
 
   attr_reader   :fields
   attr_reader   :values
   attr_accessor :strict
 
-  def initialize(obj=nil, header: true, strict: true, index: nil)
+  def initialize(obj=nil, header: true, strict: true, warn: true, index: nil)
     @fields = []
     @values = []
     @finder = {}
     @seeker = {}
+    @warn   = warn
     @index  = index
     @widest = 0
 
@@ -60,7 +61,7 @@ class Cellar
     @fields << field
     finders = @finder.size
     @finder[field.downcase.gsub(/\W/,'_')] ||= index
-    @finder.size == finders + 1 or warn "field clash for #{field.inspect}"
+    @finder.size == finders + 1 or (@warn and warn "field clash for #{field.inspect}")
     @finder[field] ||= index
     @widest = field.length if field.length > @widest
     index
